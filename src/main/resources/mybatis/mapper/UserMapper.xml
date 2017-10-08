@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.eop.spring.mvc.mybatis.annotation.mapper.UserMapper">
+
+	<insert id="insertUser" parameterType="User" useGeneratedKeys="true" keyColumn="id" keyProperty="id" statementType="PREPARED">
+		insert into tb_user (user_name,password,email,status)
+		values(#{userName},#{password},#{email},#{status})
+	</insert>
+  	
+  	<update id="updateUser" parameterType="User">
+  		update tb_user
+  		<set>
+  			<if test="userName != null and userName != ''">user_name = #{userName},</if>
+  			<if test="password != null and password != ''">password = #{password},</if>
+  			<if test="email != null and email != ''">email = #{email},</if>
+  			<if test="status != null and status != ''">status = #{status}</if>
+  		</set>
+  		where id = #{id}
+  	</update>
+  	
+  	<update id="updateUserStatus" parameterType="map">
+  		update tb_user set status = #{status} where id = #{id}
+  	</update>
+  	
+  	<delete id="deleteUser" parameterType="long">
+  		delete from tb_user where id = #{id}
+  	</delete>
+  	
+  	<select id="selectUser" parameterType="long" resultType="User">
+  		select id,user_name userName,password,email,status,reg_time registerTime from tb_user where id = #{id}
+  	</select>
+  	
+  	<select id="selectUserByLogin" parameterType="map" resultType="User">
+  		select id,user_name userName,password,email,status,reg_time registerTime from tb_user where user_name = #{userName} and password = #{password}
+  	</select>
+  	
+  	<select id="selectUsers" resultType="User">
+  		select id,user_name userName,password,email,status,reg_time registerTime from tb_user
+  	</select>
+  	
+  	<select id="selectUsersByStatus" parameterType="int" resultType="User">
+  		select id,user_name userName,password,email,status,reg_time registerTime from tb_user where status = #{status}
+  	</select>
+</mapper>
