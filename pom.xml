@@ -11,7 +11,7 @@
   <url>http://maven.apache.org</url>
   
   <properties>
-  	<spring.version>5.0.0.RELEASE</spring.version>
+  	<spring.version>4.3.13.RELEASE</spring.version>
   	<servlet.version>3.1.0</servlet.version>
   	<fasterxml.version>2.9.1</fasterxml.version>
   	<log4j2.version>2.9.1</log4j2.version>
