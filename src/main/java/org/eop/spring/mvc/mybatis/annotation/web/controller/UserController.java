@@ -3,9 +3,12 @@ package org.eop.spring.mvc.mybatis.annotation.web.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.ibatis.session.RowBounds;
 import org.eop.spring.mvc.mybatis.annotation.bean.User;
 import org.eop.spring.mvc.mybatis.annotation.service.UserService;
+import org.eop.spring.mvc.mybatis.annotation.web.exception.BindingFailureException;
 import org.eop.spring.mvc.mybatis.annotation.web.result.RestResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -56,7 +59,10 @@ public class UserController {
 	
 	
 	@PostMapping("/add")
-	public RestResult<Object> addUser(@RequestBody User user, BindingResult bresult) {
+	public RestResult<Object> addUser(@Valid @RequestBody User user, BindingResult bresult) {
+		if (bresult.hasErrors()) {
+			throw new BindingFailureException(bresult);
+		}
 		user.setStatus(1);
 		Long userId = userService.saveUser(user);
 		return new RestResult<Object>(10000, "success", userId);

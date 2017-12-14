@@ -2,6 +2,11 @@ package org.eop.spring.mvc.mybatis.annotation.bean;
 
 import java.util.Date;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * @author lixinjie
  * @since 2017-08-19
@@ -9,8 +14,12 @@ import java.util.Date;
 public class User {
 
 	private Long id;
+	@NotEmpty
 	private String userName;
+	@NotEmpty
+	@Size(min = 6, max = 16)
 	private String password;
+	@Pattern(regexp = "")
 	private String email;
 	private Integer status;
 	private Date registerTime;
