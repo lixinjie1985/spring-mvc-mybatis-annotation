@@ -25,14 +25,23 @@ public class AccessLoggingFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		
-		RepeatableHttpServletRequest rrequest = new RepeatableHttpServletRequest((HttpServletRequest)request);
-		RepeatableHttpServletResponse rresponse = new RepeatableHttpServletResponse((HttpServletResponse)response);
-		System.out.println(rrequest.getMethod() + " " + rrequest.getRequestURL());
-		System.out.println(rrequest.getContentType());
-		System.out.println(rrequest.getBody());
-		chain.doFilter(rrequest, rresponse);
-		System.out.println(rresponse.getBody());
+		HttpServletRequest httpRequest = (HttpServletRequest)request;
+		String method = httpRequest.getMethod();
+		String contentType = httpRequest.getContentType();
+		System.out.println(method + " " + httpRequest.getRequestURL() + " " + contentType);
+		if (!isFileUpload(method, contentType)) {
+			RepeatableHttpServletRequest repeatableRequest = new RepeatableHttpServletRequest(httpRequest);
+			System.out.println(repeatableRequest.getBody());
+			httpRequest = repeatableRequest;
+		}
+		RepeatableHttpServletResponse repeatableResponse = new RepeatableHttpServletResponse((HttpServletResponse)response);
+		chain.doFilter(httpRequest, repeatableResponse);
+		String contentDisposition = repeatableResponse.getHeader("Content-Disposition");
+		contentType = repeatableResponse.getContentType();
+		System.out.println(contentDisposition + " " + contentType);
+		if (!isFileDownload(contentDisposition, contentType)) {
+			System.out.println(repeatableResponse.getBody());
+		}
 	}
 
 	@Override
@@ -40,4 +49,14 @@ public class AccessLoggingFilter implements Filter {
 		
 	}
 
+	private boolean isFileUpload(String method, String contentType) {
+		if (!"post".equalsIgnoreCase(method)) {
+			return false;
+		}
+		return (contentType != null && contentType.toLowerCase().startsWith("multipart/"));
+	}
+	
+	private boolean isFileDownload(String contentDisposition, String contentType) {
+		return (contentDisposition != null && contentDisposition.toLowerCase().startsWith("attachment;"));
+	}
 }
