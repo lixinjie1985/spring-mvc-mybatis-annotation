@@ -57,6 +57,6 @@ public class AccessLoggingFilter implements Filter {
 	}
 	
 	private boolean isFileDownload(String contentDisposition, String contentType) {
-		return (contentDisposition != null && contentDisposition.toLowerCase().startsWith("attachment;"));
+		return (contentDisposition != null && contentDisposition.toLowerCase().contains("attachment"));
 	}
 }

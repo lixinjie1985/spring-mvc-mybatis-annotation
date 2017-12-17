@@ -1,10 +1,17 @@
 package org.eop.spring.mvc.mybatis.annotation.web.controller;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Part;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,5 +45,17 @@ public class FileController {
 		map.put("size", file.getSize());
 		map.put("contentType", file.getContentType());
 		return map;
+	}
+	
+	@GetMapping("/download")
+	public ResponseEntity<byte[]> downloadFile() throws IOException {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+		headers.setContentDispositionFormData("attachment", new String("上海陆鹰工作量统计.xlsx".getBytes("UTF-8"), "ISO-8859-1"));
+		FileInputStream fis = new FileInputStream("F:\\2345下载\\上海陆鹰工作量统计.xlsx");
+		byte[] buff = new byte[fis.available()];
+		fis.read(buff, 0, buff.length);
+		fis.close();
+		return new ResponseEntity<byte[]>(buff, headers, HttpStatus.OK);
 	}
 }

@@ -17,7 +17,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 @PropertySource("classpath:db/db.properties")
 public class DataSourceConfig {
 	//cmd进入jar包目录，使用下面命令行生产加密密码和公钥，放入配置文件即可
-	//java -cp druid-1.0.20.jar com.alibaba.druid.filter.config.ConfigTools 000000
+	//java -cp druid-1.1.4.jar com.alibaba.druid.filter.config.ConfigTools 000000
 	@Value("${jdbc.driver}")
 	private String driver;
 	

@@ -1,6 +1,8 @@
 package org.eop.spring.mvc.mybatis.annotation.initializer;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
 
 import org.eop.spring.mvc.mybatis.annotation.config.RootConfig;
 import org.eop.spring.mvc.mybatis.annotation.filter.AccessLoggingFilter;
@@ -49,4 +51,8 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 		return new Filter[] {characterEncodingFilter, accessLoggingFilter};
 	}
 
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		registration.setMultipartConfig(new MultipartConfigElement(null, 1024 * 1024 * 10, 1024 * 1024 * 10, 0));
+	}
 }

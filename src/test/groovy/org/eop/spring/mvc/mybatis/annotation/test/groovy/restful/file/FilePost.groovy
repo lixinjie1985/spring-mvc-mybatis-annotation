@@ -25,7 +25,7 @@ class FilePost extends AbstractPostTest {
 	@Override
 	<T> T getRequestBody() {
 		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>()
-		FileSystemResource fsr = new FileSystemResource(new File('C:\\Users\\Administrator\\Desktop\\json.txt'))
+		FileSystemResource fsr = new FileSystemResource(new File('D:\\desk\\01.jpg'))
 		body.add('name', '中文')
 		body.add('file', fsr)
 		body

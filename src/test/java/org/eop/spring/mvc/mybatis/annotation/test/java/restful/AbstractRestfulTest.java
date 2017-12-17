@@ -48,8 +48,8 @@ public abstract class AbstractRestfulTest extends AbstractJavaTest {
 		});
 		HttpEntity<?> requestEntity = new HttpEntity<Object>(getRequestBody(), headers);
 		ResponseEntity<?> responseEntity = restTplt.exchange(getBaseUri() + getRestUri(), getHttpMethod(), requestEntity, getResponseType(), getUriVars());
-		System.out.println(responseEntity.getStatusCodeValue());
-		System.out.println(responseEntity.getStatusCode().getReasonPhrase());
+		System.out.print(responseEntity.getStatusCode().value() + " " + responseEntity.getStatusCode().getReasonPhrase() + " ");
+		System.out.println(responseEntity.getHeaders().getFirst("Content-Disposition") + " " + responseEntity.getHeaders().getFirst("Content-Type"));
 		System.out.println(responseEntity.getBody());
 	}
 }

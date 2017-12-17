@@ -11,4 +11,12 @@ public class BindingFailureException extends RuntimeException {
 	public BindingFailureException(BindingResult bindingResult) {
 		this.bindingResult = bindingResult;
 	}
+	
+	public String getCode() {
+		return null;
+	}
+	
+	public String getDesc() {
+		return bindingResult.getFieldError().getDefaultMessage();
+	}
 }

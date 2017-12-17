@@ -61,6 +61,11 @@ public class UserController {
 	@PostMapping("/add")
 	public RestResult<Object> addUser(@Valid @RequestBody User user, BindingResult bresult) {
 		if (bresult.hasErrors()) {
+			System.out.println(bresult.getErrorCount() + "-----------------------------");
+			System.out.println(bresult.getFieldError().getObjectName());
+			System.out.println(bresult.getFieldError().getField());
+			System.out.println(bresult.getFieldError().getRejectedValue());
+			System.out.println(bresult.getFieldError().getDefaultMessage());
 			throw new BindingFailureException(bresult);
 		}
 		user.setStatus(1);
